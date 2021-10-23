@@ -4,7 +4,7 @@ public class KeyUnit : MonoBehaviour
 {
 
     public SpriteRenderer box;
-    public GameObject gameObject;
+    public new GameObject gameObject;
     private SpriteRenderer _spriteRenderer;
     private Material _material;
     private bool _isDissolving = false;
@@ -19,7 +19,7 @@ public class KeyUnit : MonoBehaviour
         box.color = color;
         _spriteRenderer.color = color;
         _material = box.material;
-        _material.SetFloat("_Fade",fade);
+        _material.SetFloat($"_Fade",fade);
     }
 
     private void Update()
@@ -32,7 +32,7 @@ public class KeyUnit : MonoBehaviour
                 fade = 0;
                 _isDone = true;
             }
-            _material.SetFloat("_Fade",fade);
+            _material.SetFloat($"_Fade",fade);
         }
         if (_isDone)
         {

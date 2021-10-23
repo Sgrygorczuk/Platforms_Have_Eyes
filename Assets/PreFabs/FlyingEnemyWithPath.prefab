@@ -131,6 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7656f2f2eeca5232c9c0ee0b15cac44a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eyeTransform: {fileID: 9117085147155100919}
   patrolPoints:
   - {fileID: 3520916842523564435}
   - {fileID: 3520916842110781279}
@@ -187,6 +188,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2192155176897027895, guid: f39f72f99c54925eca98c4138b8465c3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 3624353749209927302, guid: f39f72f99c54925eca98c4138b8465c3, type: 3}
+      propertyPath: m_SortingOrder
+      value: 101
+      objectReference: {fileID: 0}
+    - target: {fileID: 4942453533664071123, guid: f39f72f99c54925eca98c4138b8465c3, type: 3}
+      propertyPath: m_SortingOrder
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 6432406025747424235, guid: f39f72f99c54925eca98c4138b8465c3, type: 3}
       propertyPath: m_Name
       value: FlyingEnemy
@@ -199,6 +212,18 @@ PrefabInstance:
       propertyPath: playerPosition
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 8169009236915245466, guid: f39f72f99c54925eca98c4138b8465c3, type: 3}
+      propertyPath: xRightAdjustment
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8169009236915245466, guid: f39f72f99c54925eca98c4138b8465c3, type: 3}
+      propertyPath: yAboveAdjustment
+      value: -0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8169009236915245466, guid: f39f72f99c54925eca98c4138b8465c3, type: 3}
+      propertyPath: yBelowAdjustment
+      value: -0.15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f39f72f99c54925eca98c4138b8465c3, type: 3}
 --- !u!1 &4156261794984331307 stripped
@@ -209,5 +234,10 @@ GameObject:
 --- !u!4 &8869362308462305503 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2016542949050026783, guid: f39f72f99c54925eca98c4138b8465c3, type: 3}
+  m_PrefabInstance: {fileID: 6983531782344829888}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &9117085147155100919 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2192155176897027895, guid: f39f72f99c54925eca98c4138b8465c3, type: 3}
   m_PrefabInstance: {fileID: 6983531782344829888}
   m_PrefabAsset: {fileID: 0}

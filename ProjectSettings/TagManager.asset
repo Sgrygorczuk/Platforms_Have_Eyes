@@ -11,6 +11,7 @@ TagManager:
   - BouncePad
   - Collectible
   - Puzzle
+  - Moving
   layers:
   - Default
   - TransparentFX

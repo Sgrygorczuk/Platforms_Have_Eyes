@@ -325,7 +325,7 @@ public class Movment : MonoBehaviour
             collectibleImage.sprite = collectibleSprite;
         }
     }
-    
+
     /**
     * Input: hitBox
     * Purpose: Check if the player enters into any triggering hitBoxes   

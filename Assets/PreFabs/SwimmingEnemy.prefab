@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 5319599821874590242}
   - component: {fileID: 8942523822033923691}
   - component: {fileID: 1240941622165558361}
+  - component: {fileID: 2308901022496540819}
   m_Layer: 0
   m_Name: SwimmingEnemy
   m_TagString: Untagged
@@ -182,6 +183,10 @@ MonoBehaviour:
   eye: {fileID: 4541974918450409847}
   playerPosition: {fileID: 0}
   moveSpeed: 0.05
+  yAboveAdjustment: 0
+  yBelowAdjustment: 0
+  xLeftAdjustment: 0
+  xRightAdjustment: 0
 --- !u!95 &1240941622165558361
 Animator:
   serializedVersion: 3
@@ -201,3 +206,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2308901022496540819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6052947458654919706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7656f2f2eeca5232c9c0ee0b15cac44a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eyeTransform: {fileID: 1380358865647837382}
+  patrolPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  speed: 2
+  startWaitTime: 0

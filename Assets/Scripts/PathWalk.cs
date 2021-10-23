@@ -3,6 +3,7 @@ using UnityEngine;
 public class PathWalk : MonoBehaviour
 {
     private Transform _transform;
+    public Transform eyeTransform;
     private Animator _animator;
 
     //================ Movement 

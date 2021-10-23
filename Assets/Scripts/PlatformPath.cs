@@ -10,7 +10,8 @@ public class PlatformPath : MonoBehaviour
     public Transform[] patrolPoints; //Holds all the postions that the enemy will travel
     public float speed; //Speed of the enemy 
     private int _currentPointIndex; //Which point are they at right now
-    
+    public Transform currentPoint;
+
     //================== Pause 
     private float _waitTime;   //Timer 
     public float startWaitTime; //What timer resets to 
@@ -23,6 +24,7 @@ public class PlatformPath : MonoBehaviour
         _transform.position = patrolPoints[0].position;
         _transform.rotation = patrolPoints[0].rotation;
         _waitTime = startWaitTime;
+        currentPoint = _transform;
     }
 
     // Update is called once per frame
@@ -39,6 +41,7 @@ public class PlatformPath : MonoBehaviour
                 if (_currentPointIndex == patrolPoints.Length - 1)
                 {
                     _currentPointIndex = 0;
+                    currentPoint = patrolPoints[_currentPointIndex];
                 }
                 else
                 {
@@ -52,5 +55,15 @@ public class PlatformPath : MonoBehaviour
                 _waitTime -= Time.deltaTime;
             }
         }
+    }
+    
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        col.gameObject.transform.SetParent(gameObject.transform,true);
+    }
+
+    void OnCollisionExit2D(Collision2D col)
+    {
+        col.gameObject.transform.parent = null;
     }
 }
