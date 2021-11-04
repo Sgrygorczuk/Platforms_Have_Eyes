@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 5642017520401577734}
   - component: {fileID: 5642017520401577729}
   - component: {fileID: 5642017520401577733}
-  m_Layer: 7
-  m_Name: BouncePad
+  m_Layer: 0
+  m_Name: BouncePadUo
   m_TagString: BouncePad
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98,7 +98,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0000009536743, y: -0.3823709}
+  m_Offset: {x: 0.0013618469, y: -0.43406123}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -109,7 +109,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.8368015, y: 0.23525822}
+  m_Size: {x: 0.8068733, y: 0.13187754}
   m_EdgeRadius: 0
 --- !u!114 &5642017520401577729
 MonoBehaviour:

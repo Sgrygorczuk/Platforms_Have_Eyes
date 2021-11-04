@@ -1,7 +1,5 @@
-using System;
 using UnityEngine;
 using System.Collections;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class Movment : MonoBehaviour
@@ -19,16 +17,22 @@ public class Movment : MonoBehaviour
     public Text scoreText;  //Reference to the text object 
     public Image collectibleImage;
     public Sprite collectibleSprite;
+    public AudioSource bounceSfx;
+    public AudioSource collectSfx;
+    public AudioSource puzzleSfx;
+    public AudioSource checkpointSfx;
+    public AudioSource deathSfx;
+    public AudioSource waterSfx;
     
     private Rigidbody2D _rigidbody2D;
     private Transform _transform;
     private Animator _animator;
     private BoxCollider2D _boxCollider2D;
-    private float _xInput = 0;
-    private float _yInput = 0;
+    private float _xInput;
+    public float _yInput;
     private bool _facingRight = true;
-    private bool _isInWater = false;
-    private int _score = 0; 
+    private bool _isInWater;
+    private int _score; 
 
     private PlayerControls _playerControls;
 
@@ -66,7 +70,7 @@ public class Movment : MonoBehaviour
     {
         if (IsGrounded() && _yInput < 0)
         {
-            _animator.SetBool("inAir", false);
+            _animator.SetBool($"inAir", false);
         }
 
         if (_isInWater)
@@ -120,8 +124,8 @@ public class Movment : MonoBehaviour
         }
         else
         {
-            UpdateRotation(-speed);
-            _animator.SetBool("isWalking", true);
+            //UpdateRotation(-speed);
+            _animator.SetBool($"isWalking", true);
         }
     }
 
@@ -134,8 +138,8 @@ public class Movment : MonoBehaviour
         }
         else
         {
-            UpdateRotation(speed);
-            _animator.SetBool("isWalking", true);
+            //UpdateRotation(speed);
+            _animator.SetBool($"isWalking", true);
         }
     }
 
@@ -158,7 +162,7 @@ public class Movment : MonoBehaviour
     private void StandHorizontal()
     {
         _xInput = 0;
-        _animator.SetBool("isWalking", false);
+        _animator.SetBool($"isWalking", false);
     }
     
     private void StandVertical()
@@ -168,9 +172,9 @@ public class Movment : MonoBehaviour
 
     private void Jump()
     {
-        if (_animator.GetBool("inAir") || _isInWater) return;
+        if (_animator.GetBool($"inAir") || _isInWater) return;
         _yInput = Vector2.up.y * jumpForce;
-        _animator.SetBool("inAir", true);
+        _animator.SetBool($"inAir", true);
     }
 
 
@@ -189,7 +193,11 @@ public class Movment : MonoBehaviour
     {
         if (!_isInWater)
         {
-            if (_rigidbody2D.velocity.y < 0 || (!IsGrounded() && _rigidbody2D.velocity.y == 0))
+            if (IsGrounded() && !_animator.GetBool($"inAir"))
+            {
+                _yInput = 0;
+            }
+            else if (_rigidbody2D.velocity.y <= 0 || (!IsGrounded() && _rigidbody2D.velocity.y == 0))
             {
                 _yInput += Vector2.up.y * Physics2D.gravity.y * (fallMul - 1) * Time.deltaTime;
             }
@@ -221,7 +229,8 @@ public class Movment : MonoBehaviour
     private bool IsGrounded()
     {
         const float extraHeightTest = 0.1f;
-        var raycast = Physics2D.BoxCast(_boxCollider2D.bounds.center, _boxCollider2D.bounds.size, 0, Vector2.down, extraHeightTest, platformLayerMask);
+        var bounds = _boxCollider2D.bounds;
+        var raycast = Physics2D.BoxCast(bounds.center, bounds.size, 0, Vector2.down, extraHeightTest, platformLayerMask);
         var isNotNull = raycast.collider != null;
         DrawJumpDebug(isNotNull, extraHeightTest);
         return isNotNull;
@@ -277,12 +286,11 @@ public class Movment : MonoBehaviour
     */
     private void OnTriggerEnter2D(Collider2D hitBox)
     {
-        print(hitBox.tag);
         if (hitBox.CompareTag($"Spike"))
         {
             StartCoroutine(Respawn());
         }
-        if (hitBox.CompareTag($"Water"))
+        else if (hitBox.CompareTag($"Water"))
         {
             _isInWater = true;
             StartCoroutine(WaterDip());
@@ -291,16 +299,16 @@ public class Movment : MonoBehaviour
                 _animator.SetBool($"inAir", false);
             }
             _animator.SetBool($"inWater", true);
+            waterSfx.Play();
         }
-
-        if (hitBox.CompareTag($"Checkpoint"))
+        else if (hitBox.CompareTag($"Checkpoint"))
         {
+            if(respawnPoint.position != hitBox.transform.position){checkpointSfx.Play();}
             respawnPoint.position = hitBox.transform.position;
         }
-        
-        if (hitBox.CompareTag($"BouncePad"))
+        else if (hitBox.CompareTag($"BouncePad"))
         {
-            _animator.SetBool("inAir", true);
+            _animator.SetBool($"inAir", true);
             var data = hitBox.gameObject.GetComponent<BouncePad>();
             if (data.direction.x != 0)
             {
@@ -309,20 +317,21 @@ public class Movment : MonoBehaviour
             if(data.direction.y != 0){
                 _yInput = data.direction.y * jumpForce;
             }
+            bounceSfx.Play();
         }
-
-        if (hitBox.CompareTag($"Collectible"))
+        else if (hitBox.CompareTag($"Collectible"))
         {
             var data = hitBox.gameObject.GetComponent<Collectible>();
             _score += data.score;
             Destroy(data.gameObject);
             scoreText.text = _score.ToString();
+            collectSfx.Play();
         }
-        
-        if (hitBox.CompareTag($"Puzzle"))
+        else if (hitBox.CompareTag($"Puzzle"))
         {
             Destroy(hitBox.gameObject);
             collectibleImage.sprite = collectibleSprite;
+            puzzleSfx.Play();
         }
     }
 
@@ -338,6 +347,7 @@ public class Movment : MonoBehaviour
             _transform.rotation = Quaternion.Euler(0, 0, 0);
             _yInput = Vector2.up.y * jumpForce;
             _animator.SetBool($"inWater", false);
+            waterSfx.Play();
         }
     }
     
@@ -354,6 +364,7 @@ public class Movment : MonoBehaviour
 
     private IEnumerator Respawn()
     {
+        deathSfx.Play();
         OnDisable();
         animationFade.Play("fade");
         _rigidbody2D.velocity = new Vector2(0, 0);

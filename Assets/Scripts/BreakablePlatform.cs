@@ -11,6 +11,8 @@ public class BreakablePlatform : MonoBehaviour
     public Material _material;
     public bool isDissolving = false;
     public float fade = 1f;
+    public AudioSource audioSourceOne;
+    public AudioSource audioSourceTwo;
 
     private SpriteRenderer _spriteRenderer;
     private int _state = 0;
@@ -42,6 +44,7 @@ public class BreakablePlatform : MonoBehaviour
                 boxCollider2D.enabled = false;
                 boxCollider2DTrigger.enabled = false;
                 _state++;
+                audioSourceTwo.Play();
                 break;
             }
             case 3:
@@ -101,6 +104,7 @@ public class BreakablePlatform : MonoBehaviour
         if (hitBox.CompareTag($"Player"))
         {
             _state++;
+            audioSourceOne.Play();
         }
     }
 }

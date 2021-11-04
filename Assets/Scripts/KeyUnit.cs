@@ -11,6 +11,7 @@ public class KeyUnit : MonoBehaviour
     private bool _isDone = false;
     public float fade = 1f;
     public Color color = new Color(1f, 1f, 1f, 1f);
+    public AudioSource audioSource;
 
     // Start is called before the first frame update
     void Start()
@@ -50,6 +51,7 @@ public class KeyUnit : MonoBehaviour
         {
             _spriteRenderer.color =  new Color(1f, 1f, 1f, 0f);
             _isDissolving = true;
+            audioSource.Play();
         }
     }
 }
