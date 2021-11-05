@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
-public class Movment : MonoBehaviour
+public class Movement : MonoBehaviour
 {
 
     public Transform respawnPoint;
@@ -17,10 +17,7 @@ public class Movment : MonoBehaviour
     public Text scoreText;  //Reference to the text object 
     public Image collectibleImage;
     public Sprite collectibleSprite;
-    public AudioSource bounceSfx;
-    public AudioSource collectSfx;
     public AudioSource puzzleSfx;
-    public AudioSource checkpointSfx;
     public AudioSource deathSfx;
     public AudioSource waterSfx;
     
@@ -28,8 +25,8 @@ public class Movment : MonoBehaviour
     private Transform _transform;
     private Animator _animator;
     private BoxCollider2D _boxCollider2D;
-    private float _xInput;
-    public float _yInput;
+    public float xInput;
+    public float yInput;
     private bool _facingRight = true;
     private bool _isInWater;
     private int _score; 
@@ -62,13 +59,13 @@ public class Movment : MonoBehaviour
         _transform = GetComponent<Transform>();
         _animator = GetComponent<Animator>();
         _boxCollider2D = GetComponent<BoxCollider2D>();
-        _yInput = 0;
+        yInput = 0;
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (IsGrounded() && _yInput < 0)
+        if (IsGrounded() && yInput < 0)
         {
             _animator.SetBool($"inAir", false);
         }
@@ -81,35 +78,35 @@ public class Movment : MonoBehaviour
 
     private void UpdateWaterRotation()
     {
-        if (_xInput == speed && _yInput == speedVertical)
+        if (xInput == speed && yInput == speedVertical)
         {
             _transform.rotation = Quaternion.Euler(0, 0, -45);
         }
-        else if (_xInput == speed && _yInput == -speedVertical)
+        else if (xInput == speed && yInput == -speedVertical)
         {
             _transform.rotation = Quaternion.Euler(0, 0, -135);
         }
-        else if (_xInput == -speed && _yInput == speedVertical)
+        else if (xInput == -speed && yInput == speedVertical)
         {
             _transform.rotation = Quaternion.Euler(0, 0, 45);
         }
-        else if (_xInput == -speed && _yInput == -speedVertical)
+        else if (xInput == -speed && yInput == -speedVertical)
         {
             _transform.rotation = Quaternion.Euler(0, 0, 135);
         }
-        else if (_xInput == speed && _yInput == 0)
+        else if (xInput == speed && yInput == 0)
         {
             _transform.rotation = Quaternion.Euler(0, 0, -90);
         }
-        else if (_xInput == -speed && _yInput == 0)
+        else if (xInput == -speed && yInput == 0)
         {
             _transform.rotation = Quaternion.Euler(0, 0, 90);
         }
-        else if (_xInput == 0 && _yInput == speedVertical)
+        else if (xInput == 0 && yInput == speedVertical)
         {
             _transform.rotation = Quaternion.Euler(0, 0, 0);
         }
-        else if (_xInput == 0 && _yInput == -speedVertical)
+        else if (xInput == 0 && yInput == -speedVertical)
         {
             _transform.rotation = Quaternion.Euler(0, 0, 180);
         }
@@ -117,28 +114,28 @@ public class Movment : MonoBehaviour
 
     private void WalkLeft()
     {
-        _xInput = -speed;
+        xInput = -speed;
         if (_isInWater)
         {
             
         }
         else
         {
-            //UpdateRotation(-speed);
+            UpdateRotation(-speed);
             _animator.SetBool($"isWalking", true);
         }
     }
 
     private void WalkRight()
     {
-        _xInput = speed;
+        xInput = speed;
         if (_isInWater)
         {
             
         }
         else
         {
-            //UpdateRotation(speed);
+            UpdateRotation(speed);
             _animator.SetBool($"isWalking", true);
         }
     }
@@ -147,7 +144,7 @@ public class Movment : MonoBehaviour
     {
         if (_isInWater)
         {
-            _yInput = speedVertical;
+            yInput = speedVertical;
         }
     }
 
@@ -155,25 +152,27 @@ public class Movment : MonoBehaviour
     {
         if (_isInWater)
         {
-            _yInput = -speedVertical;
+            yInput = -speedVertical;
         }
     }
 
     private void StandHorizontal()
     {
-        _xInput = 0;
+        xInput = 0;
         _animator.SetBool($"isWalking", false);
     }
     
     private void StandVertical()
     {
-        _yInput = 0;
+        if(_isInWater){
+            yInput = 0;
+        }
     }
 
     private void Jump()
     {
         if (_animator.GetBool($"inAir") || _isInWater) return;
-        _yInput = Vector2.up.y * jumpForce;
+        yInput = Vector2.up.y * jumpForce;
         _animator.SetBool($"inAir", true);
     }
 
@@ -195,19 +194,19 @@ public class Movment : MonoBehaviour
         {
             if (IsGrounded() && !_animator.GetBool($"inAir"))
             {
-                _yInput = 0;
+                yInput = 0;
             }
             else if (_rigidbody2D.velocity.y <= 0 || (!IsGrounded() && _rigidbody2D.velocity.y == 0))
             {
-                _yInput += Vector2.up.y * Physics2D.gravity.y * (fallMul - 1) * Time.deltaTime;
+                yInput += Vector2.up.y * Physics2D.gravity.y * (fallMul - 1) * Time.deltaTime;
             }
             else if (_rigidbody2D.velocity.y > 0)
             {
-                _yInput += Vector2.up.y * Physics2D.gravity.y * (riseMul - 1) * Time.deltaTime;
+                yInput += Vector2.up.y * Physics2D.gravity.y * (riseMul - 1) * Time.deltaTime;
             }  
         }
 
-        _rigidbody2D.velocity = new Vector2(_xInput, _yInput);
+        _rigidbody2D.velocity = new Vector2(xInput, yInput);
     }
     
 
@@ -260,25 +259,30 @@ public class Movment : MonoBehaviour
 
     private IEnumerator TurnLeft()
     {
-        transform.localEulerAngles = new Vector3(0,45,0);
+        UpdateAngle(new Vector3(0,45,0));
         yield return new WaitForSeconds(0.05f);
-        transform.localEulerAngles = new Vector3(0,89,0);
+        UpdateAngle(new Vector3(0,89,0));
         yield return new WaitForSeconds(0.05f);
-        transform.localEulerAngles = new Vector3(0,135,0);
+        UpdateAngle(new Vector3(0,135,0));
         yield return new WaitForSeconds(0.05f);
-        transform.localEulerAngles = new Vector3(0,180,0);
-    } 
-    
+        UpdateAngle(new Vector3(0,180,0));
+    }
     private IEnumerator TurnRight()
     {
-        transform.localEulerAngles = new Vector3(0,135,0);
+        UpdateAngle(new Vector3(0,135,0));
         yield return new WaitForSeconds(0.05f);
-        transform.localEulerAngles = new Vector3(0,89,0);
+        UpdateAngle(new Vector3(0,89,0));
         yield return new WaitForSeconds(0.05f);
-        transform.localEulerAngles = new Vector3(0,45,0);
+        UpdateAngle(new Vector3(0,45,0));
         yield return new WaitForSeconds(0.05f);
-        transform.localEulerAngles = new Vector3(0,0,0);
+        UpdateAngle(new Vector3(0,0,0));
     } 
+    
+    private void UpdateAngle(Vector3 angles)
+    {
+        transform.localEulerAngles = angles;
+    }
+
 
     /**
     * Input: hitBox
@@ -301,32 +305,6 @@ public class Movment : MonoBehaviour
             _animator.SetBool($"inWater", true);
             waterSfx.Play();
         }
-        else if (hitBox.CompareTag($"Checkpoint"))
-        {
-            if(respawnPoint.position != hitBox.transform.position){checkpointSfx.Play();}
-            respawnPoint.position = hitBox.transform.position;
-        }
-        else if (hitBox.CompareTag($"BouncePad"))
-        {
-            _animator.SetBool($"inAir", true);
-            var data = hitBox.gameObject.GetComponent<BouncePad>();
-            if (data.direction.x != 0)
-            {
-                _xInput = data.direction.x * jumpForce; 
-            }
-            if(data.direction.y != 0){
-                _yInput = data.direction.y * jumpForce;
-            }
-            bounceSfx.Play();
-        }
-        else if (hitBox.CompareTag($"Collectible"))
-        {
-            var data = hitBox.gameObject.GetComponent<Collectible>();
-            _score += data.score;
-            Destroy(data.gameObject);
-            scoreText.text = _score.ToString();
-            collectSfx.Play();
-        }
         else if (hitBox.CompareTag($"Puzzle"))
         {
             Destroy(hitBox.gameObject);
@@ -341,29 +319,43 @@ public class Movment : MonoBehaviour
     */
     private void OnTriggerExit2D(Collider2D hitBox)
     {
-        if (hitBox.CompareTag($"Water"))
+        if (!hitBox.CompareTag($"Water")) return;
+        _isInWater = false;
+        _transform.rotation = Quaternion.Euler(0, 0, 0);
+        yInput = Vector2.up.y * jumpForce;
+        _animator.SetBool($"inWater", false);
+        waterSfx.Play();
+    }
+
+    public void UpdateScore(int score)
+    {
+        _score += score;
+        scoreText.text = _score.ToString();
+    }
+
+    public void BouncePadUpdate(Vector2 velocity)
+    {
+        _animator.SetBool($"inAir", true);
+        if (velocity.x != 0)
         {
-            _isInWater = false;
-            _transform.rotation = Quaternion.Euler(0, 0, 0);
-            _yInput = Vector2.up.y * jumpForce;
-            _animator.SetBool($"inWater", false);
-            waterSfx.Play();
+            xInput = velocity.x * jumpForce; 
+        }
+        if(velocity.y != 0){
+            yInput = velocity.y * jumpForce;
         }
     }
-    
-    
 
     private IEnumerator WaterDip()
     {
-        _yInput = Vector2.down.y * jumpForce;
+        yInput = Vector2.down.y * jumpForce;
         yield return new WaitForSeconds(0.3f);
-        _yInput = 0;
+        yInput = 0;
     }
-
     
-
     private IEnumerator Respawn()
     {
+        xInput = 0;
+        yInput = 0;
         deathSfx.Play();
         OnDisable();
         animationFade.Play("fade");

@@ -256,7 +256,6 @@ MonoBehaviour:
   gameObject: {fileID: 6427851903042044373}
   fade: 1
   color: {r: 1, g: 1, b: 1, a: 1}
-  audioSource: {fileID: 2560259959105370684}
 --- !u!82 &2560259959105370684
 AudioSource:
   m_ObjectHideFlags: 0

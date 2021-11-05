@@ -1,44 +1,45 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * Breakable platform crack when the player steps on them and evaporate when the player steps off, with a timer
+ * they come back.
+ */
 public class BreakablePlatform : MonoBehaviour
 {
-    public Sprite unbroken;
-    public Sprite broken;
-    public BoxCollider2D boxCollider2D;
-    public BoxCollider2D boxCollider2DTrigger;
-    public Material _material;
-    public bool isDissolving = false;
-    public float fade = 1f;
-    public AudioSource audioSourceOne;
-    public AudioSource audioSourceTwo;
+    public Sprite unbroken;                     //Sprite of the unbroken block 
+    public Sprite broken;                       //Sprite of the broken block 
+    public BoxCollider2D boxCollider2D;         //The Box collider on which the player stands 
+    public BoxCollider2D boxCollider2DTrigger;  //The Box collider that checks if the player stepped on the block 
+    public float fade = 1f;                     //The fade percentage goes between 0 and 1
+    public AudioSource audioSourceOne;          //The audio that plays when player steps on block
+    public AudioSource audioSourceTwo;          //The audio of the block breaking after player walks off
 
-    private SpriteRenderer _spriteRenderer;
-    private int _state = 0;
-    
-    //================== Pause 
-    private float _waitTime;   //Timer 
-    public float startWaitTime; //What timer resets to 
+    private Material _material;                 //Material of the sprite that will let us fade it in and out 
+    private SpriteRenderer _spriteRenderer;     //The sprite renderer 
+    private int _state;                         //Tells us how the block should be behaving 
+    private float _waitTime;                    //Timer 
+    public float startWaitTime;                 //What timer resets to 
     
     // Start is called before the first frame update
     private void Start()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _material = GetComponent<SpriteRenderer>().material;
-        _material.SetFloat("_Fade",fade);
+        _material.SetFloat($"_Fade",fade);
         _waitTime = startWaitTime;
     }
 
     // Update is called once per frame
     public void Update()
     {
-        print(_state);
+        //Changes how the block behaves based on the different state 
         switch (_state)
         {
+            //Player stepped on it and the sprite changes to the broken one 
             case 1:
                 _spriteRenderer.sprite = broken;
                 break;
+            //Player steps of the platform and you can't collide with it anymore 
             case 2:
             {
                 boxCollider2D.enabled = false;
@@ -47,6 +48,7 @@ public class BreakablePlatform : MonoBehaviour
                 audioSourceTwo.Play();
                 break;
             }
+            //The block fades away
             case 3:
             {
                 fade -= Time.deltaTime;
@@ -56,9 +58,10 @@ public class BreakablePlatform : MonoBehaviour
                     _spriteRenderer.sprite = unbroken;
                     _state++;
                 }
-                _material.SetFloat("_Fade",fade);
+                _material.SetFloat($"_Fade",fade);
                 break;
             }
+            //The block waits till the timer is over and the block fades back into existence 
             case 4:
             {
                 if (_waitTime <= 0)
@@ -72,7 +75,7 @@ public class BreakablePlatform : MonoBehaviour
                          boxCollider2D.enabled = true;
                          boxCollider2DTrigger.enabled = true;
                     }
-                    _material.SetFloat("_Fade",fade);
+                    _material.SetFloat($"_Fade",fade);
                 }
                 else
                 {
@@ -85,7 +88,7 @@ public class BreakablePlatform : MonoBehaviour
 
     /**
     * Input: hitBox
-    * Purpose: Check if the player enters into any triggering hitBoxes   
+    * Purpose: Check if the player enters into any triggering hitBoxes, updates the state of the block
     */
     private void OnTriggerExit2D(Collider2D hitBox)
     {
@@ -97,14 +100,12 @@ public class BreakablePlatform : MonoBehaviour
     
     /**
     * Input: hitBox
-    * Purpose: Check if the player enters into any triggering hitBoxes   
+    * Purpose: Check if the player enters into any triggering hitBoxes, updates the state of the block 
     */
     private void OnTriggerEnter2D(Collider2D hitBox)
     {
-        if (hitBox.CompareTag($"Player"))
-        {
-            _state++;
-            audioSourceOne.Play();
-        }
+        if (!hitBox.CompareTag($"Player")) return;
+        _state++;
+        audioSourceOne.Play();
     }
 }

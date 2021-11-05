@@ -547,7 +547,7 @@ PrefabInstance:
       objectReference: {fileID: 6200000, guid: 44ef8757dec89162e90d6a0edb0d1cf2, type: 2}
     - target: {fileID: 1475192170, guid: a353753d6b663575398747e4467d0087, type: 3}
       propertyPath: m_GravityScale
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1475192171, guid: a353753d6b663575398747e4467d0087, type: 3}
       propertyPath: bcol
@@ -559,7 +559,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1475192171, guid: a353753d6b663575398747e4467d0087, type: 3}
       propertyPath: fallMul
-      value: 2.5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1475192171, guid: a353753d6b663575398747e4467d0087, type: 3}
       propertyPath: riseMul
@@ -585,6 +585,10 @@ PrefabInstance:
       propertyPath: boxCollider2D
       value: 
       objectReference: {fileID: 138084059237388687}
+    - target: {fileID: 1475192171, guid: a353753d6b663575398747e4467d0087, type: 3}
+      propertyPath: speedVertical
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1475192171, guid: a353753d6b663575398747e4467d0087, type: 3}
       propertyPath: animationFadeTwo
       value: 
@@ -619,11 +623,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5353522243254644191, guid: a353753d6b663575398747e4467d0087, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.17
       objectReference: {fileID: 0}
     - target: {fileID: 5353522243254644191, guid: a353753d6b663575398747e4467d0087, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.38
       objectReference: {fileID: 0}
     - target: {fileID: 5353522243254644191, guid: a353753d6b663575398747e4467d0087, type: 3}
       propertyPath: m_LocalPosition.z

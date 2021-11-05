@@ -1,21 +1,23 @@
 using UnityEngine;
 
+/*
+ * The Eye that is stuck on enemies that follows the player movement 
+ */
 public class Eye : MonoBehaviour
 {
-    
     public SpriteRenderer eye;
     public  Transform playerPosition;
     public float moveSpeed = 0.1f;
-    public float yAboveAdjustment = 0;
-    public float yBelowAdjustment = 0;
-    public float xLeftAdjustment = 0;
-    public float xRightAdjustment = 0; 
+    public float yAboveAdjustment;
+    public float yBelowAdjustment;
+    public float xLeftAdjustment;
+    public float xRightAdjustment; 
     private Vector2 _position;
     private Transform _transform;
     private Transform _firstTransform;
-    private float _yAdjustment = 0;
-    private float _xAdjustment = 0;
-    public bool print = false;
+    private float _yAdjustment;
+    private float _xAdjustment;
+    
     private void Start()
     {
         _transform = GetComponent<Transform>();
