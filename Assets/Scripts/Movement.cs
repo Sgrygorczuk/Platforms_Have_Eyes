@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
@@ -20,6 +21,7 @@ public class Movement : MonoBehaviour
     public AudioSource puzzleSfx;
     public AudioSource deathSfx;
     public AudioSource waterSfx;
+    public SpriteRenderer spriteRenderer;
     
     private Rigidbody2D _rigidbody2D;
     private Transform _transform;
@@ -313,18 +315,34 @@ public class Movement : MonoBehaviour
         }
     }
 
+    private void OnTriggerStay2D(Collider2D hitBox)
+    {
+        if (!hitBox.CompareTag($"Bad_Water")) return;
+        var color = spriteRenderer.color;
+        color = new Color((float)(color.r - 0.005), (float)(color.b - 0.005),
+            (float)(color.g - 0.005), 1);
+        spriteRenderer.color = color;
+        print(color);
+        if(spriteRenderer.color.r < -0.5){StartCoroutine(Respawn());}
+    }
+
     /**
     * Input: hitBox
     * Purpose: Check if the player enters into any triggering hitBoxes   
     */
     private void OnTriggerExit2D(Collider2D hitBox)
     {
+        if (hitBox.CompareTag($"Bad_Water"))
+        {
+            spriteRenderer.color = new Color(1,1,1,1);
+        }
         if (!hitBox.CompareTag($"Water")) return;
         _isInWater = false;
         _transform.rotation = Quaternion.Euler(0, 0, 0);
         yInput = Vector2.up.y * jumpForce;
         _animator.SetBool($"inWater", false);
         waterSfx.Play();
+        
     }
 
     public void UpdateScore(int score)
@@ -360,12 +378,13 @@ public class Movement : MonoBehaviour
         OnDisable();
         animationFade.Play("fade");
         _rigidbody2D.velocity = new Vector2(0, 0);
-        
+
         yield return new WaitForSeconds(0.3f);
         
         animationFadeTwo.Play("fade");
         yield return new WaitForSeconds(0.4f);
         
+        spriteRenderer.color = new Color(1, 1, 1, 1);
         OnEnable();
         var position = respawnPoint.position;
         _rigidbody2D.position = new Vector2(position.x, position.y);

@@ -12,6 +12,7 @@ TagManager:
   - Collectible
   - Puzzle
   - Moving
+  - Bad_Water
   layers:
   - Default
   - TransparentFX
