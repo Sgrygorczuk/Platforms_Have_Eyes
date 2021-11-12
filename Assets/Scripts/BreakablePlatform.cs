@@ -66,7 +66,7 @@ public class BreakablePlatform : MonoBehaviour
             {
                 if (_waitTime <= 0)
                 {
-                    fade += Time.deltaTime;
+                    fade += 2 * Time.deltaTime;
                     if (fade >= 1)
                     {
                         fade = 1;

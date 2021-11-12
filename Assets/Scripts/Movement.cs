@@ -292,7 +292,7 @@ public class Movement : MonoBehaviour
     */
     private void OnTriggerEnter2D(Collider2D hitBox)
     {
-        if (hitBox.CompareTag($"Spike"))
+        if (hitBox.CompareTag($"Spike") || hitBox.CompareTag($"Enemy"))
         {
             StartCoroutine(Respawn());
         }
@@ -306,6 +306,7 @@ public class Movement : MonoBehaviour
             }
             _animator.SetBool($"inWater", true);
             waterSfx.Play();
+            _rigidbody2D.gravityScale = 0;
         }
         else if (hitBox.CompareTag($"Puzzle"))
         {
@@ -342,7 +343,8 @@ public class Movement : MonoBehaviour
         yInput = Vector2.up.y * jumpForce;
         _animator.SetBool($"inWater", false);
         waterSfx.Play();
-        
+        _rigidbody2D.gravityScale = 1;
+
     }
 
     public void UpdateScore(int score)
