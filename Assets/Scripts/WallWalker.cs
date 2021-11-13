@@ -14,6 +14,7 @@ public class WallWalker : MonoBehaviour
     public float x;
     private float _spawnTime;   //The timer
     private const float StartSpawn = 3; //Max time the timer can be a
+    private bool _dead = false;
 
     // Start is called before the first frame update
     private void Start()
@@ -28,7 +29,7 @@ public class WallWalker : MonoBehaviour
     public void Update()
     {
         _rigidbody2D.velocity = new Vector2(x, _rigidbody2D.velocity.y);
-        Jump();
+        if(!_dead){Jump();}
     }
 
     private void OnTriggerEnter2D(Collider2D hitBox)
@@ -41,6 +42,7 @@ public class WallWalker : MonoBehaviour
         x = 0;
         _animator.SetBool($"Dead", true);
         deathSfx.Play();
+        _dead = true;
     }
 
     private void Jump()

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,12 +10,23 @@ public class EnemyDeathZone : MonoBehaviour
     public float score;
     public float scoreGoal;
     public Text scoreText;  //Reference to the text object 
+    private bool _keyUnlocked;
+    public AudioSource gotKey;
+
+    private void Start()
+    {
+        _keyUnlocked = false;
+    }
 
     private void Update()
     {
-        if (score <= scoreGoal) return;
-        key.GetComponent<Collider2D>().enabled = true;
-        key.GetComponent<SpriteRenderer>().enabled = true;
+        if (score >= scoreGoal && !_keyUnlocked)
+        {
+            _keyUnlocked = true;
+            gotKey.Play();
+            key.GetComponent<Collider2D>().enabled = true;
+            key.GetComponent<SpriteRenderer>().enabled = true;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D hitBox)

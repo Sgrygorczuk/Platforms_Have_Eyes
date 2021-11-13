@@ -493,7 +493,14 @@ MonoBehaviour:
 
     Splash! - kwahmah_02
 
-    Player Death - luminousfridge'
+    Player Death - luminousfridge
+
+    Zombie
+    Death 1.wav - tonsil5
+
+    game-win.mp3 - mickleness
+
+'
 --- !u!222 &2120991278
 CanvasRenderer:
   m_ObjectHideFlags: 0
