@@ -343,7 +343,7 @@ public class Movement : MonoBehaviour
         yInput = Vector2.up.y * jumpForce;
         _animator.SetBool($"inWater", false);
         waterSfx.Play();
-        _rigidbody2D.gravityScale = 1;
+        _rigidbody2D.gravityScale = 2;
 
     }
 
