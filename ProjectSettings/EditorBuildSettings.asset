@@ -6,9 +6,39 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 1
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
     path: Assets/Scenes/Test.unity
     guid: 65361858fef49a00faaef9acb0dbfe4d
+  - enabled: 1
+    path: Assets/Scenes/Overworld.unity
+    guid: f7169e581502aa637bb829e40ed2e333
+  - enabled: 1
+    path: Assets/Scenes/Credit.unity
+    guid: 07ed2ce15e70a8a96823fe8efeb6a744
+  - enabled: 1
+    path: Assets/Scenes/World_1_Level_1.unity
+    guid: 6c7c972bc40a8b3a09608fb5a85a965e
+  - enabled: 1
+    path: Assets/Scenes/World_2_Level_1.unity
+    guid: 1bb800be3854e3b24a5267290dced87f
+  - enabled: 1
+    path: Assets/Scenes/World_2_Level_2.unity
+    guid: 9dd5454fed6019941a898e3ac20c30fc
+  - enabled: 1
+    path: Assets/Scenes/World_3_Level_1.unity
+    guid: 8ef74fcf362e8059b90f1b1e2876605f
+  - enabled: 1
+    path: Assets/Scenes/World_3_Level_2.unity
+    guid: 650850204e64ae074a5853e292ced353
+  - enabled: 1
+    path: Assets/Scenes/World_4_Level_1.unity
+    guid: 097273abca79289d19fcb18147b33313
+  - enabled: 1
+    path: Assets/Scenes/Wolrd_4_Level_2.unity
+    guid: 8461459abd3b6949dbb598037a6b8392
+  - enabled: 1
+    path: Assets/Scenes/World_4_Level_3.unity
+    guid: 01eaa9d24289e40e2a762962d5ddec05
   m_configObjects: {}

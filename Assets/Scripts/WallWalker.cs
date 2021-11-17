@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class WallWalker : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class WallWalker : MonoBehaviour
     public AudioSource deathSfx;
     public float x;
     private float _spawnTime;   //The timer
-    private const float StartSpawn = 3; //Max time the timer can be a
+    private float StartSpawn = 3; //Max time the timer can be a
     private bool _dead = false;
 
     // Start is called before the first frame update
@@ -22,6 +23,7 @@ public class WallWalker : MonoBehaviour
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _boxCollider2D = GetComponent<BoxCollider2D>();
         _animator = GetComponent<Animator>();
+        StartSpawn = Random.Range(1.0f, 5.0f);
         _spawnTime = StartSpawn;
     }
 
