@@ -9,6 +9,8 @@ public class PlatformPath : MonoBehaviour
     public float speed; //Speed of the enemy 
     private int _currentPointIndex; //Which point are they at right now
     public Transform currentPoint;
+    public bool steppingOnByUser;
+    private bool isSteppedOn;
 
     //================== Pause 
     private float _waitTime;   //Timer 
@@ -28,40 +30,82 @@ public class PlatformPath : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if (steppingOnByUser)
+        {
+            SteppedOnMove();
+        }
+        else
+        {
+            RegularMovement();
+        }
+    }
+
+    private void SteppedOnMove()
+    {
+        var index = 0;
+        if (isSteppedOn)
+        {
+            index = 1;
+        }
+        _transform.position = Vector2.MoveTowards(_transform.position, patrolPoints[index].position,
+            speed * Time.deltaTime);
+        _transform.rotation = patrolPoints[index].rotation;
+    }
+
+    private void RegularMovement()
+    {
         //Tells it to move from currently standing in point, to given point at the given speed 
         _transform.position = Vector2.MoveTowards(_transform.position, patrolPoints[_currentPointIndex].position,
             speed * Time.deltaTime);
         _transform.rotation = patrolPoints[_currentPointIndex].rotation;
-        if (transform.position == patrolPoints[_currentPointIndex].position)
+        if (transform.position != patrolPoints[_currentPointIndex].position) return;
+        if (_waitTime <= 0)
         {
-            if (_waitTime <= 0)
+            if (_currentPointIndex == patrolPoints.Length - 1)
             {
-                if (_currentPointIndex == patrolPoints.Length - 1)
-                {
-                    _currentPointIndex = 0;
-                    currentPoint = patrolPoints[_currentPointIndex];
-                }
-                else
-                {
-                    _currentPointIndex++;
-                }
-
-                _waitTime = startWaitTime;
+                _currentPointIndex = 0;
+                currentPoint = patrolPoints[_currentPointIndex];
             }
             else
             {
-                _waitTime -= Time.deltaTime;
+                _currentPointIndex++;
             }
+
+            _waitTime = startWaitTime;
+        }
+        else
+        {
+            _waitTime -= Time.deltaTime;
         }
     }
-    
-    void OnCollisionEnter2D(Collision2D col)
+
+    private void OnCollisionEnter2D(Collision2D col)
     {
         col.gameObject.transform.SetParent(gameObject.transform,true);
     }
 
-    void OnCollisionExit2D(Collision2D col)
+    public void OnCollisionExit2D(Collision2D col)
     {
         col.gameObject.transform.parent = null;
+    }
+    
+    /**
+    * Input: hitBox
+         * Purpose: Check if the player enters into any triggering hitBoxes,
+         */
+         private void OnTriggerEnter2D(Collider2D hitBox)
+         {
+             if (!hitBox.CompareTag($"Player")) return;
+             isSteppedOn = true;
+         }
+    
+    /**
+    * Input: hitBox
+         * Purpose: Check if the player enters into any triggering hitBoxes,
+         */
+    private void OnTriggerExit2D(Collider2D hitBox)
+    {
+        if (!hitBox.CompareTag($"Player")) return;
+        isSteppedOn = false;
     }
 }

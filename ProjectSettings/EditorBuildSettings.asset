@@ -39,6 +39,9 @@ EditorBuildSettings:
     path: Assets/Scenes/World_4_Level_3.unity
     guid: 01eaa9d24289e40e2a762962d5ddec05
   - enabled: 1
+    path: Assets/Scenes/World_4_Level_4.unity
+    guid: 4dbfc802ff2cb5d308527236c9adb6d7
+  - enabled: 1
     path: Assets/Scenes/Credit.unity
     guid: 07ed2ce15e70a8a96823fe8efeb6a744
   m_configObjects: {}
